@@ -1,4 +1,6 @@
 import { Revenue } from './definitions';
+import fs from 'fs';
+import path from 'path';
 
 export const formatCurrency = (amount: number) => {
   return (amount / 100).toLocaleString('en-US', {
@@ -9,7 +11,7 @@ export const formatCurrency = (amount: number) => {
 
 export const formatDateToLocal = (
   dateStr: string,
-  locale: string = 'en-US',
+  locale: string = 'en-US'
 ) => {
   const date = new Date(dateStr);
   const options: Intl.DateTimeFormatOptions = {
@@ -67,3 +69,12 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+
+const mdxDirectory = path.join(process.cwd(), 'mdx');
+
+export function getAllMdxSlugs() {
+  return fs
+    .readdirSync(mdxDirectory)
+    .filter((file) => file.endsWith('.mdx'))
+    .map((file) => file.replace(/\.mdx$/, ''));
+}
